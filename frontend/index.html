@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Magang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-10">
+
+  <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow">
+    <h1 class="text-2xl font-bold mb-4">
+      Form Data Magang
+    </h1>
+
+    <input id="nama" placeholder="Nama"
+      class="border p-2 w-full mb-3">
+
+    <input id="tempat" placeholder="Tempat Magang"
+      class="border p-2 w-full mb-3">
+
+    <input id="mulai" type="date"
+      class="border p-2 w-full mb-3">
+
+    <input id="selesai" type="date"
+      class="border p-2 w-full mb-3">
+
+    <label class="block mb-3">
+      <input id="status" type="checkbox">
+      Sudah dapat referral letter
+    </label>
+
+    <button onclick="submitData()"
+      class="bg-blue-500 text-white px-4 py-2 rounded">
+      Submit
+    </button>
+  </div>
+
+<script>
+async function submitData() {
+  const data = {
+    nama: document.getElementById("nama").value,
+    tempat_magang: document.getElementById("tempat").value,
+    tanggal_mulai: document.getElementById("mulai").value,
+    tanggal_selesai: document.getElementById("selesai").value,
+    status_referral: document.getElementById("status").checked
+  };
+
+  const response = await fetch(
+    "http://IP_BACKEND_SERVER:3000/mahasiswa",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+  );
+
+  const result = await response.text();
+
+  alert(result);
+}
+</script>
+
+</body>
+</html>
