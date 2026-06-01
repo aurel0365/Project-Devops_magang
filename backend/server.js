@@ -14,7 +14,7 @@ app.use(express.json());
 // DATABASE CONNECTION
 // =====================
 const db = mysql.createConnection({
-  host: "IP_DB_SERVER",
+  host: "34.10.132.215",
   user: "maganguser",
   password: "password123",
   database: "magang_db"
