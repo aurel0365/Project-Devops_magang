@@ -3,62 +3,240 @@
 <head>
   <title>Data Magang</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 p-10">
 
-  <div class="max-w-xl mx-auto bg-white p-6 rounded-xl shadow">
-    <h1 class="text-2xl font-bold mb-4">
-      Form Data Magang
-    </h1>
+<body class="bg-gray-100 leading-relaxed">
 
-    <input id="nama" placeholder="Nama"
-      class="border p-2 w-full mb-3">
+<!-- NAVBAR -->
+<nav class="bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 py-4 flex justify-between items-center fixed w-full top-0 z-50 shadow-sm">
 
-    <input id="tempat" placeholder="Tempat Magang"
-      class="border p-2 w-full mb-3">
-
-    <input id="mulai" type="date"
-      class="border p-2 w-full mb-3">
-
-    <input id="selesai" type="date"
-      class="border p-2 w-full mb-3">
-
-    <label class="block mb-3">
-      <input id="status" type="checkbox">
-      Sudah dapat referral letter
-    </label>
-
-    <button onclick="submitData()"
-      class="bg-blue-500 text-white px-4 py-2 rounded">
-      Submit
-    </button>
+  <div class="font-bold text-lg text-gray-800">
+    Magang <span class="text-orange-500">System</span>
   </div>
 
+  <div class="space-x-8 text-sm font-medium text-gray-600">
+    <a href="#home" class="hover:text-orange-500 transition">Home</a>
+    <a href="#form" class="hover:text-orange-500 transition">Form</a>
+    <a href="#data" class="hover:text-orange-500 transition">Data</a>
+  </div>
+
+</nav>
+
+<div class="pt-24"></div>
+
+<!-- HERO -->
+<section id="home" class="reveal text-center py-24 bg-gradient-to-b from-orange-50 to-gray-100">
+
+  <div class="max-w-3xl mx-auto">
+
+    <div class="inline-block bg-orange-100 text-orange-600 px-4 py-1 rounded-full text-sm mb-6">
+      🎓 Internship Management System UC Makassar
+    </div>
+
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
+      Selamat Datang di <span class="text-orange-500">Sistem Magang</span>
+    </h1>
+
+    <p class="text-gray-500 mt-6 text-lg">
+      Kelola data mahasiswa magang secara modern, cepat, dan terstruktur dalam satu dashboard.
+    </p>
+
+    <div class="mt-10">
+      <a href="#form"
+        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg shadow-md font-semibold transition">
+        Mulai Input Data
+      </a>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FORM -->
+<section id="form"
+  class="reveal max-w-3xl mx-auto bg-white p-10 rounded-2xl shadow-lg border border-gray-100 mb-20">
+
+  <h2 class="text-lg font-bold text-gray-800 mb-8">
+    Form Pendaftaran
+  </h2>
+
+  <div class="space-y-4">
+
+    <input id="nama" placeholder="Nama Mahasiswa"
+      class="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-orange-300 outline-none">
+
+    <input id="tempat" placeholder="Tempat Magang"
+      class="border border-gray-300 p-3 w-full rounded-lg focus:ring-2 focus:ring-orange-300 outline-none">
+
+    <div class="grid grid-cols-2 gap-4">
+
+      <input id="mulai" type="date"
+        class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-orange-300 outline-none">
+
+      <input id="selesai" type="date"
+        class="border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-orange-300 outline-none">
+
+    </div>
+
+  </div>
+
+  <label class="flex items-center gap-2 mt-6 mb-6 text-gray-600">
+    <input id="status" type="checkbox" class="accent-orange-500">
+    Sudah dapat referral letter
+  </label>
+
+  <button onclick="submitData()"
+    class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-3 rounded-lg w-full font-semibold transition">
+    Submit Data
+  </button>
+
+  <p id="msg" class="text-sm mt-4"></p>
+
+</section>
+
+<!-- DATA -->
+<section id="data"
+  class="reveal max-w-5xl mx-auto bg-white p-10 rounded-2xl shadow-lg border border-gray-100 mb-24">
+
+  <h2 class="text-lg font-bold text-gray-800 mb-6">
+    Data Magang
+  </h2>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm border rounded-lg overflow-hidden">
+
+      <thead class="bg-gray-50 text-gray-700">
+        <tr>
+          <th class="p-4 border">Nama</th>
+          <th class="p-4 border">Tempat</th>
+          <th class="p-4 border">Mulai</th>
+          <th class="p-4 border">Selesai</th>
+          <th class="p-4 border">Status</th>
+        </tr>
+      </thead>
+
+      <tbody id="tableData" class="bg-white">
+        <tr>
+          <td colspan="5" class="text-center p-6 text-gray-400">
+            Belum ada data
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</section>
+
 <script>
+let dataList = [];
+
+// SUBMIT
 async function submitData() {
+  const nama = document.getElementById("nama").value;
+  const tempat = document.getElementById("tempat").value;
+  const mulai = document.getElementById("mulai").value;
+  const selesai = document.getElementById("selesai").value;
+  const status = document.getElementById("status").checked;
+  const msg = document.getElementById("msg");
+
+  if (!nama || !tempat || !mulai || !selesai) {
+    msg.innerHTML = "❌ Semua field wajib diisi";
+    msg.className = "text-red-500 text-sm mt-4";
+    return;
+  }
+
   const data = {
-    nama: document.getElementById("nama").value,
-    tempat_magang: document.getElementById("tempat").value,
-    tanggal_mulai: document.getElementById("mulai").value,
-    tanggal_selesai: document.getElementById("selesai").value,
-    status_referral: document.getElementById("status").checked
+    nama,
+    tempat_magang: tempat,
+    tanggal_mulai: mulai,
+    tanggal_selesai: selesai,
+    status_referral: status
   };
 
-  const response = await fetch(
-    "http://IP_BACKEND_SERVER:3000/mahasiswa",
-    {
+  try {
+    await fetch("http://IP_BACKEND_SERVER:3000/mahasiswa", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
-    }
-  );
+    });
 
-  const result = await response.text();
+    msg.innerHTML = "✅ Data berhasil dikirim";
+    msg.className = "text-green-600 text-sm mt-4";
 
-  alert(result);
+    dataList.push(data);
+    renderTable();
+
+    document.getElementById("nama").value = "";
+    document.getElementById("tempat").value = "";
+    document.getElementById("mulai").value = "";
+    document.getElementById("selesai").value = "";
+    document.getElementById("status").checked = false;
+
+  } catch (err) {
+    msg.innerHTML = "❌ Gagal koneksi server";
+    msg.className = "text-red-500 text-sm mt-4";
+  }
 }
+
+// TABLE
+function renderTable() {
+  const table = document.getElementById("tableData");
+
+  if (dataList.length === 0) {
+    table.innerHTML = `
+      <tr>
+        <td colspan="5" class="text-center p-6 text-gray-400">
+          Belum ada data
+        </td>
+      </tr>`;
+    return;
+  }
+
+  table.innerHTML = dataList.map(d => `
+    <tr class="hover:bg-orange-50 transition">
+      <td class="p-4 border">${d.nama}</td>
+      <td class="p-4 border">${d.tempat_magang}</td>
+      <td class="p-4 border">${d.tanggal_mulai}</td>
+      <td class="p-4 border">${d.tanggal_selesai}</td>
+      <td class="p-4 border">
+        ${d.status_referral
+          ? '<span class="text-green-600 font-medium">✔ Sudah</span>'
+          : '<span class="text-red-500 font-medium">❌ Belum</span>'}
+      </td>
+    </tr>
+  `).join("");
+}
+
+// ANIMATION
+function revealOnScroll() {
+  const reveals = document.querySelectorAll(".reveal");
+
+  for (let i = 0; i < reveals.length; i++) {
+    const windowHeight = window.innerHeight;
+    const elementTop = reveals[i].getBoundingClientRect().top;
+
+    if (elementTop < windowHeight - 120) {
+      reveals[i].classList.add("active");
+    }
+  }
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
 </script>
 
 </body>
